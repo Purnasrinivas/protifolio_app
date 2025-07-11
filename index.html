@@ -29,14 +29,15 @@
             </div>
         </div>
     </div>
+
     <header class="site-header">
         <div class="container">
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#work" class="nav-link">Work</a></li>
-                    <li><a href="#beyond-9-5" class="nav-link">Beyond 9-5</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="#home" class="nav-link active" data-nav="#home">Home</a></li>
+                    <li><a href="#work" class="nav-link" data-nav="#work">Work</a></li>
+                    <li><a href="#beyond-9-5" class="nav-link" data-nav="#beyond-9-5">Beyond 9-5</a></li>
+                    <li><a href="#contact" class="nav-link" data-nav="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -47,13 +48,13 @@
             <div class="home-grid">
                 <div class="text-scroller">
                     <div class="headline-group">
-                        <h2>I design scalable microservices and dynamic user interfaces.</h2>
+                        <h2>I design <span class="highlight">scalable microservices</span> and dynamic user interfaces.</h2>
                     </div>
                     <div class="headline-group">
-                        <h2>I leverage AWS cloud technologies to build reliable and efficient software.</h2>
+                        <h2>I leverage <span class="highlight">AWS cloud technologies</span> to build reliable and efficient software.</h2>
                     </div>
                     <div class="headline-group">
-                        <h2>I collaborate with teams to deliver high-quality solutions, on time.</h2>
+                        <h2>I collaborate with teams to deliver <span class="highlight">high-quality solutions,</span> on time.</h2>
                     </div>
                 </div>
         
@@ -66,7 +67,7 @@
                 <p>With over five years of experience as a Full Stack Developer, I specialize in building scalable microservices using Java and Spring, architecting cloud solutions on AWS, and leading development in fast-paced Agile environments.</p>
                 <p>Outside of my core roles, I enjoy applying my skills to unique challenges, from advising on public sector software to developing and selling a niche jobs newsletter application.</p>
                 <p>I am passionate about the growing AI community and actively engage with industry leaders and new technologies at events like Cincy AI Week.</p>
-                <a href="assets/images/PURNA SRINIVAS ADDURI.pdf" class="button" target="_blank">View CV</a>
+                <a href="assets/images/PURNA SRINIVAS ADDURI.pdf" class="button" target="_blank" data-nav="cv">View CV</a>
             </div>
         
             <div id="scroll-trigger"></div>
@@ -121,6 +122,7 @@
                 </div>
             </div>
         </section>
+        
         <section id="beyond-9-5" class="page-section">
             <div class="container">
                 <h2>Beyond 9-5</h2>
@@ -155,6 +157,7 @@
                 </div>
             </div>
         </section>
+
         <section id="contact" class="page-section">
             <div class="container">
                 <h2>Get In Touch</h2>
