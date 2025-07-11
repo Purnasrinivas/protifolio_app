@@ -19,28 +19,31 @@ window.addEventListener('load', () => {
 // --- Main Application Logic ---
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- GRAND FINALE: Click Tracking & Particle Explosion Effect ---
-    const trackedLinks = document.querySelectorAll('[data-nav]');
-    const totalLinks = 5; // Home, Work, Beyond 9-5, Contact, CV
+    // --- GRAND FINALE & GLOBAL CLICK EFFECT ---
+    const totalLinks = 3; // Work, Beyond 9-5, Contact
     const clickedLinks = new Set();
     let finaleTriggered = false;
 
-    trackedLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            if (finaleTriggered) return;
+    // A single, global click listener for the splash effect
+    document.addEventListener('click', (e) => {
+        // 1. Always create the particle explosion on any click
+        createParticleExplosion(e.clientX, e.clientY);
 
-            createParticleExplosion(e.clientX, e.clientY);
-
-            const navId = link.dataset.nav;
+        // 2. Check if a tracked link was clicked to progress the finale
+        const trackedLink = e.target.closest('[data-nav]');
+        if (trackedLink && !finaleTriggered) {
+            const navId = trackedLink.dataset.nav;
             if (!clickedLinks.has(navId)) {
                 clickedLinks.add(navId);
                 if (clickedLinks.size >= totalLinks) {
                     finaleTriggered = true;
+                    // Add a slight delay for the last splash to be seen
                     setTimeout(() => triggerFinale(), 500);
                 }
             }
-        });
+        }
     });
+
 
     function createParticleExplosion(x, y) {
         const particleContainer = document.createElement('div');
@@ -82,8 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="notification-content">
                 <div class="notification-icon">😊</div>
                 <div class="notification-text">
-                    <p class="sender">THANKS FOR VIEWING</p>
-                    <p>YOU JUST MADE THIS SITE MORE BEAUTIFUL!</p>
+                    <p class="sender">THANK YOU</p>
+                    <p>You’ve just brought this website to life,</p>
+                    <p> now let’s see it shine in action!!</p>
                 </div>
             </div>
         `;
@@ -98,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- Page Section Transitions ---
-    const navLinks = document.querySelectorAll('.nav-link');
+    // --- Page Section Transitions (this still needs its own listener) ---
+    const navLinks = document.querySelectorAll('.main-nav a');
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const targetId = link.getAttribute('href').substring(1);
@@ -110,16 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentActiveSection = document.querySelector('.page-section.active');
             const currentActiveLink = document.querySelector('.nav-link.active');
 
-            if (currentActiveSection.id === targetId) return;
+            if (currentActiveSection && currentActiveSection.id === targetId) return;
 
             if (currentActiveLink) currentActiveLink.classList.remove('active');
             link.classList.add('active');
 
-            currentActiveSection.classList.add('is-exiting');
-            currentActiveSection.addEventListener('animationend', () => {
-                currentActiveSection.classList.remove('active', 'is-exiting');
-                targetSection.classList.add('active');
-            }, { once: true });
+            if(currentActiveSection) {
+                currentActiveSection.classList.add('is-exiting');
+                currentActiveSection.addEventListener('animationend', () => {
+                    currentActiveSection.classList.remove('active', 'is-exiting');
+                    targetSection.classList.add('active');
+                }, { once: true });
+            } else {
+                 targetSection.classList.add('active');
+            }
         });
     });
 
@@ -142,23 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Homepage Animations Initialization ---
 function initializeHomepageAnimations() {
-    
-    // NEW: Pro Tip Notification Logic
-    const proTip = document.createElement('div');
-    proTip.className = 'pro-tip-notification';
-    proTip.innerHTML = '<strong>Pro Tip:</strong> click on all the buttons to transform this website.';
-    document.body.appendChild(proTip);
-
-    // Set timer to dismiss the pro tip
-    setTimeout(() => {
-        proTip.classList.add('fade-out');
-        // Remove from DOM after animation
-        setTimeout(() => {
-            proTip.remove();
-        }, 500);
-    }, 5000); // 5 seconds
-
-
     // --- Image-to-Text Scroll Transition ---
     const homeImage = document.getElementById('home-image');
     const homeSummaryText = document.getElementById('home-summary-text');

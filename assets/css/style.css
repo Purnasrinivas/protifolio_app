@@ -136,34 +136,32 @@ h1, h2, .contact-links { /* Basic styles */ }
 .globe { font-size: 1.5rem; animation: spin 8s linear infinite; }
 .marquee { position: absolute; top: 80%; left: 0; width: 100%; transform: translateY(-50%); overflow: hidden; pointer-events: none; z-index: 3; }
 .marquee-track { display: flex; white-space: nowrap; animation: marquee 25s linear infinite; }
-.marquee-track span { font-size: 10rem; font-weight: 500; margin: 0 2rem; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); }
+.marquee-track span { font-size: 10rem; font-weight: 800; margin: 0 2rem; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-500%); } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 body.is-loading .site-header, body.is-loading .main-content { opacity: 0; }
 
 /* ------------------- */
-/* Grand Finale Styles */
+/* FINAL: Grand Finale Styles */
 /* ------------------- */
 .finale-splash-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; pointer-events: none; overflow: hidden; }
 .color-particle { position: absolute; width: 15px; height: 15px; border-radius: 50%; opacity: 1; animation: particle-explosion 1.2s ease-out forwards; }
 @keyframes particle-explosion { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
 
+/* Finale Animated Background */
 body.finale {
-    background: radial-gradient(circle at 80% 20%, #f012be 0%, transparent 30%),
-                radial-gradient(circle at 20% 80%, #0074d9 0%, transparent 25%),
-                radial-gradient(circle at 50% 50%, #ffdc00 0%, transparent 20%),
-                radial-gradient(circle at 90% 90%, #ff4136 0%, transparent 30%),
-                radial-gradient(circle at 10% 10%, #2ecc40 0%, transparent 25%),
-                #121212;
-    background-size: 200% 200%;
-    animation: animate-gradient 10s linear infinite;
+    background: linear-gradient(135deg, #f012be, #ffdc00, #2ecc40, #0074d9, #ff4136);
+    background-size: 400% 400%;
+    animation: animate-gradient 15s ease infinite;
 }
 
 @keyframes animate-gradient {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 200% 200%; }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
+/* Make content tiles semi-transparent during finale */
 body.finale .site-header,
 body.finale .work-tile,
 body.finale .project-showcase {
@@ -173,38 +171,66 @@ body.finale .project-showcase {
 }
 body.finale .highlight { background-color: var(--clr-accent); }
 
+
+/* Finale Notification - CORRECTED */
 #finale-notification {
     position: fixed;
-    top: -200px;
+    top: -200px; /* Start off-screen */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10001;
-    width: 90%;
-    max-width: 380px;
-    background-color: rgba(40, 40, 40, 0.7);
+    width: 100%;
+    max-width: 420px;
+    background-color: rgba(40, 40, 40, 0.75);
     color: #EAEAEA;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-radius: 20px;
-    padding: 1rem;
+    padding: 1rem 1.25rem; /* Adjusted padding */
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    animation: drop-in-notification 1s forwards cubic-bezier(0.22, 1, 0.36, 1);
-    animation-delay: 1.2s;
+    animation: drop-in-notification 0.8s forwards cubic-bezier(0.22, 1, 0.36, 1);
+    animation-delay: 0.2s; /* ADJUSTED: Reduced delay for faster appearance */
 }
+
 #finale-notification.fade-out {
     animation: fade-out-notification 0.5s forwards ease-in;
     animation-delay: 0s;
 }
-.notification-content { display: flex; align-items: center; gap: 1rem; }
-.notification-icon { font-size: 2.5rem; }
-.notification-text p { margin: 0; text-align: left; }
-.notification-text p.sender { font-weight: bold; color: #34D399; }
-@keyframes drop-in-notification { to { top: 1.5rem; } }
-@keyframes fade-out-notification { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+
+.notification-content {
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+    gap: 1rem;
+}
+.notification-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0; /* Prevents icon from shrinking */
+}
+.notification-text {
+    text-align: left;
+}
+.notification-text p {
+    margin: 0;
+    line-height: 1.3; /* Adjusted for better spacing */
+}
+.notification-text p.sender {
+    font-weight: bold;
+    color: #34D399;
+}
+
+@keyframes drop-in-notification {
+    to {
+        top: 1.5rem;
+    }
+}
+@keyframes fade-out-notification {
+    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+    to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
 
 /* ------------------- */
-/* NEW: Pro Tip Notification */
+/* Pro Tip Notification */
 /* ------------------- */
 .pro-tip-notification {
     position: fixed;
@@ -220,7 +246,7 @@ body.finale .highlight { background-color: var(--clr-accent); }
     font-size: 0.95rem;
     animation: slide-in-pro-tip 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
     opacity: 1;
-    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .pro-tip-notification.fade-out {
