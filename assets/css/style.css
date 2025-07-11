@@ -30,7 +30,7 @@ body {
     background-color: var(--clr-bg);
     color: var(--clr-text);
     font-size: var(--font-size-base);
-    transition: background 1.5s ease-in-out;
+    transition: background 1.5s ease-in-out; 
 }
 body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, ul { margin: 0; }
 img, picture { max-width: 100%; display: block; }
@@ -136,38 +136,34 @@ h1, h2, .contact-links { /* Basic styles */ }
 .globe { font-size: 1.5rem; animation: spin 8s linear infinite; }
 .marquee { position: absolute; top: 80%; left: 0; width: 100%; transform: translateY(-50%); overflow: hidden; pointer-events: none; z-index: 3; }
 .marquee-track { display: flex; white-space: nowrap; animation: marquee 25s linear infinite; }
-.marquee-track span { font-size: 10rem; font-weight: 800; margin: 0 2rem; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); }
+.marquee-track span { font-size: 10rem; font-weight: 500; margin: 0 2rem; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-500%); } }
 body.is-loading .site-header, body.is-loading .main-content { opacity: 0; }
 
 /* ------------------- */
-/* FINAL: Grand Finale Styles */
+/* Grand Finale Styles */
 /* ------------------- */
 .finale-splash-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; pointer-events: none; overflow: hidden; }
 .color-particle { position: absolute; width: 15px; height: 15px; border-radius: 50%; opacity: 1; animation: particle-explosion 1.2s ease-out forwards; }
 @keyframes particle-explosion { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
 
-/* New Finale Animated Background */
 body.finale {
-    background-color: #121212;
-    background-image:
-        radial-gradient(circle at 10% 15%, #F012BE 1px, transparent 20%),
-        radial-gradient(circle at 80% 25%, #FF4136 1px, transparent 20%),
-        radial-gradient(circle at 30% 75%, #0074D9 2px, transparent 25%),
-        radial-gradient(circle at 90% 65%, #2ECC40 1px, transparent 20%),
-        radial-gradient(circle at 50% 45%, #FFDC00 2px, transparent 25%),
-        radial-gradient(circle at 60% 85%, #FF851B 1px, transparent 20%);
+    background: radial-gradient(circle at 80% 20%, #f012be 0%, transparent 30%),
+                radial-gradient(circle at 20% 80%, #0074d9 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, #ffdc00 0%, transparent 20%),
+                radial-gradient(circle at 90% 90%, #ff4136 0%, transparent 30%),
+                radial-gradient(circle at 10% 10%, #2ecc40 0%, transparent 25%),
+                #121212;
     background-size: 200% 200%;
-    animation: animate-splash-dots 10s linear infinite;
+    animation: animate-gradient 10s linear infinite;
 }
 
-@keyframes animate-splash-dots {
+@keyframes animate-gradient {
     0% { background-position: 0% 0%; }
     100% { background-position: 200% 200%; }
 }
 
-/* Make content tiles semi-transparent to blend with the new background */
 body.finale .site-header,
 body.finale .work-tile,
 body.finale .project-showcase {
@@ -177,8 +173,6 @@ body.finale .project-showcase {
 }
 body.finale .highlight { background-color: var(--clr-accent); }
 
-
-/* New Finale Notification */
 #finale-notification {
     position: fixed;
     top: -200px;
@@ -198,7 +192,6 @@ body.finale .highlight { background-color: var(--clr-accent); }
     animation: drop-in-notification 1s forwards cubic-bezier(0.22, 1, 0.36, 1);
     animation-delay: 1.2s;
 }
-
 #finale-notification.fade-out {
     animation: fade-out-notification 0.5s forwards ease-in;
     animation-delay: 0s;
@@ -209,3 +202,39 @@ body.finale .highlight { background-color: var(--clr-accent); }
 .notification-text p.sender { font-weight: bold; color: #34D399; }
 @keyframes drop-in-notification { to { top: 1.5rem; } }
 @keyframes fade-out-notification { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+
+/* ------------------- */
+/* NEW: Pro Tip Notification */
+/* ------------------- */
+.pro-tip-notification {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 999;
+    background-color: var(--clr-surface-bg);
+    color: var(--clr-text);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--clr-border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    font-size: 0.95rem;
+    animation: slide-in-pro-tip 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    opacity: 1;
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+
+.pro-tip-notification.fade-out {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+@keyframes slide-in-pro-tip {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

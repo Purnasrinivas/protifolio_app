@@ -74,24 +74,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function triggerFinale() {
-        // THE GUARANTEED FIX: Simply add the .finale class. The CSS will handle the background.
         document.body.classList.add('finale');
         
-        // Create and append the notification message
         const finaleMessage = document.createElement('div');
         finaleMessage.id = 'finale-notification';
         finaleMessage.innerHTML = `
             <div class="notification-content">
                 <div class="notification-icon">😊</div>
                 <div class="notification-text">
-                    <p class="sender">THANK YOU FOR VIEWING</p>
-                    <p>YOU JUST MADE MY WEBSITE BEAUTIFUL!</p>
+                    <p class="sender">THANKS FOR VIEWING</p>
+                    <p>YOU JUST MADE THIS SITE MORE BEAUTIFUL!</p>
                 </div>
             </div>
         `;
         document.body.appendChild(finaleMessage);
 
-        // Auto-hide notification after 5 seconds
         setTimeout(() => {
             finaleMessage.classList.add('fade-out');
             setTimeout(() => {
@@ -145,6 +142,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Homepage Animations Initialization ---
 function initializeHomepageAnimations() {
+    
+    // NEW: Pro Tip Notification Logic
+    const proTip = document.createElement('div');
+    proTip.className = 'pro-tip-notification';
+    proTip.innerHTML = '<strong>Pro Tip:</strong> click on all the buttons to transform this website.';
+    document.body.appendChild(proTip);
+
+    // Set timer to dismiss the pro tip
+    setTimeout(() => {
+        proTip.classList.add('fade-out');
+        // Remove from DOM after animation
+        setTimeout(() => {
+            proTip.remove();
+        }, 500);
+    }, 5000); // 5 seconds
+
+
     // --- Image-to-Text Scroll Transition ---
     const homeImage = document.getElementById('home-image');
     const homeSummaryText = document.getElementById('home-summary-text');
