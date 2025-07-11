@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="notification-content">
                 <div class="notification-icon">😊</div>
                 <div class="notification-text">
-                    <p class="sender">Purna's Portfolio</p>
-                    <p>Thank you for taking the time to view my website!</p>
+                    <p class="sender">THANK YOU FOR VIEWING</p>
+                    <p>YOU JUST MADE MY WEBSITE BEAUTIFUL!</p>
                 </div>
             </div>
         `;
