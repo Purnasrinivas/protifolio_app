@@ -150,9 +150,9 @@ body.is-loading .site-header, body.is-loading .main-content { opacity: 0; }
 
 /* Finale Animated Background */
 body.finale {
-    background: linear-gradient(135deg, #f012be, #ffdc00, #2ecc40, #0074d9, #ff4136);
+    background: linear-gradient(135deg, #ff6ec4, #7873f5, #42e695, #ffe140);
     background-size: 400% 400%;
-    animation: animate-gradient 15s ease infinite;
+    animation: animate-gradient 10s ease infinite;
 }
 
 @keyframes animate-gradient {
