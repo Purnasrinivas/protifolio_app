@@ -10,40 +10,41 @@ window.addEventListener('load', () => {
         }
         document.body.classList.remove('is-loading');
         
-        initializeHomepageAnimations();
+        initializePageAnimations();
 
-    }, 5000);
+    }, 5000); // 5 seconds
 });
 
 
 // --- Main Application Logic ---
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- GRAND FINALE & GLOBAL CLICK EFFECT ---
-    const totalLinks = 3; // Work, Beyond 9-5, Contact
-    const clickedLinks = new Set();
-    let finaleTriggered = false;
+    // --- Theme Toggle Logic (Focused / Playful) ---
+    const themeToggle = document.getElementById('theme-toggle-checkbox');
+    
+    if (localStorage.getItem('theme') === 'playful') {
+        document.body.classList.add('playful-mode');
+        if (themeToggle) themeToggle.checked = true;
+    }
 
-    // A single, global click listener for the splash effect
-    document.addEventListener('click', (e) => {
-        // 1. Always create the particle explosion on any click
-        createParticleExplosion(e.clientX, e.clientY);
-
-        // 2. Check if a tracked link was clicked to progress the finale
-        const trackedLink = e.target.closest('[data-nav]');
-        if (trackedLink && !finaleTriggered) {
-            const navId = trackedLink.dataset.nav;
-            if (!clickedLinks.has(navId)) {
-                clickedLinks.add(navId);
-                if (clickedLinks.size >= totalLinks) {
-                    finaleTriggered = true;
-                    // Add a slight delay for the last splash to be seen
-                    setTimeout(() => triggerFinale(), 500);
-                }
+    if (themeToggle) {
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                document.body.classList.add('playful-mode');
+                localStorage.setItem('theme', 'playful');
+            } else {
+                document.body.classList.remove('playful-mode');
+                localStorage.setItem('theme', 'focused');
             }
+        });
+    }
+
+    // --- Conditional Particle Splash on all clicks ---
+    document.addEventListener('click', function(e) {
+        if (document.body.classList.contains('playful-mode')) {
+            createParticleExplosion(e.clientX, e.clientY);
         }
     });
-
 
     function createParticleExplosion(x, y) {
         const particleContainer = document.createElement('div');
@@ -75,102 +76,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => particleContainer.remove(), 1500);
     }
-
-    function triggerFinale() {
-        document.body.classList.add('finale');
-        
-        const finaleMessage = document.createElement('div');
-        finaleMessage.id = 'finale-notification';
-        finaleMessage.innerHTML = `
-            <div class="notification-content">
-                <div class="notification-icon">😊</div>
-                <div class="notification-text">
-                    <p class="sender">THANK YOU</p>
-                    <p>You’ve just brought this website to life,</p>
-                    <p> now let’s see it shine in action!!</p>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(finaleMessage);
-
-        setTimeout(() => {
-            finaleMessage.classList.add('fade-out');
-            setTimeout(() => {
-                finaleMessage.remove();
-            }, 500);
-        }, 5000); 
-    }
+    
+    // --- Scroll Transparency for Header ---
+    const siteHeader = document.getElementById('site-header');
+    let isScrolling;
+    window.addEventListener('scroll', () => {
+        if (siteHeader) {
+            siteHeader.classList.add('nav-scrolled');
+        }
+        window.clearTimeout(isScrolling);
+        isScrolling = setTimeout(() => {
+            if (window.scrollY < 50) {
+                siteHeader.classList.remove('nav-scrolled');
+            }
+        }, 250);
+    }, false);
 
 
-    // --- Page Section Transitions (this still needs its own listener) ---
-    const navLinks = document.querySelectorAll('.main-nav a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const targetId = link.getAttribute('href').substring(1);
-            if (!targetId || targetId.includes('.pdf')) return;
-
-            e.preventDefault();
-            const targetSection = document.getElementById(targetId);
-            const currentActiveSection = document.querySelector('.page-section.active');
-            const currentActiveLink = document.querySelector('.nav-link.active');
-
-            if (currentActiveSection && currentActiveSection.id === targetId) return;
-
-            if (currentActiveLink) currentActiveLink.classList.remove('active');
-            link.classList.add('active');
-
-            if(currentActiveSection) {
-                currentActiveSection.classList.add('is-exiting');
-                currentActiveSection.addEventListener('animationend', () => {
-                    currentActiveSection.classList.remove('active', 'is-exiting');
-                    targetSection.classList.add('active');
-                }, { once: true });
-            } else {
-                 targetSection.classList.add('active');
+    // --- Universal Scroll-triggered Animation Logic ---
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
             }
         });
+    }, { threshold: 0.15 });
+    
+    animatedElements.forEach(el => {
+        scrollObserver.observe(el);
     });
 
-    // --- Beyond 9-5: Slide-in animations ---
-    const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    if (animatedElements.length > 0) {
-        const scrollObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.remove('hidden-left', 'hidden-right');
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
+    // --- Gallery Card Carousel Logic ---
+    const galleryCards = document.querySelectorAll('.gallery-card');
+    galleryCards.forEach(card => {
+        const nextBtn = card.querySelector('.next-btn');
+        const images = card.querySelectorAll('.gallery-image');
+        let currentImageIndex = 0;
+
+        if (nextBtn && images.length > 1) {
+            nextBtn.addEventListener('click', () => {
+                images[currentImageIndex].classList.remove('active');
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                images[currentImageIndex].classList.add('active');
             });
-        }, { threshold: 0.3 });
-        animatedElements.forEach(el => scrollObserver.observe(el));
-    }
+        }
+    });
+
 });
 
 
-// --- Homepage Animations Initialization ---
-function initializeHomepageAnimations() {
-    // --- Image-to-Text Scroll Transition ---
-    const homeImage = document.getElementById('home-image');
-    const homeSummaryText = document.getElementById('home-summary-text');
-    const scrollTrigger = document.getElementById('scroll-trigger');
+// --- All Page Animations Are Now In This Function ---
+function initializePageAnimations() {
 
-    if (homeImage && homeSummaryText && scrollTrigger) {
-        const heroObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    homeImage.classList.add('fade-out');
-                    homeSummaryText.classList.add('visible');
-                } else {
-                    homeImage.classList.remove('fade-out');
-                    homeSummaryText.classList.remove('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-        heroObserver.observe(scrollTrigger);
+    // Bouncing Ball Navigation Animation
+    const navItems = document.querySelectorAll('.main-nav li');
+    if (navItems.length > 0) {
+        navItems.forEach(item => {
+            item.classList.add('visible');
+        });
     }
 
-    // --- Typewriter effect for headlines ---
+    // Homepage Typewriter effect for headlines
     const headlineGroups = document.querySelectorAll('.headline-group');
     const TYPE_SPEED_MS = 120;
 
@@ -204,7 +172,7 @@ function initializeHomepageAnimations() {
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.6 });
+        }, { threshold: 0.8 });
 
         headlineGroups.forEach(group => {
             const h2 = group.querySelector('h2');
